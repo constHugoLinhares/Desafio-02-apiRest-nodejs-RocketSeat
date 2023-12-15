@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "knex": "node --no-warnings --loader tsx ./node_modules/.bin/knex",
+    "knex": "node --no-warnings tsx ./node_modules/.bin/knex",
+    "migrate:latest": "npx knex --knexfile ./knexFile.ts  migrate:latest",
     "migrate:make": "npx knex --knexfile ./knexFile.ts",
     "lint": "eslint src --ext .ts --fix",
     "build": "tsup src --out-dir build",
@@ -23,11 +24,14 @@
     "fastify": "^4.25.0",
     "knex": "^3.1.0",
     "pg": "^8.11.3",
+    "run": "^1.4.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@rocketseat/eslint-config": "^2.1.0",
     "@types/node": "^18.11.18",
     "@types/supertest": "^2.0.12",
+    "eslint": "^8.55.0",
     "sqlite3": "^5.1.4",
     "supertest": "^6.3.3",
     "tsup": "^8.0.1",
