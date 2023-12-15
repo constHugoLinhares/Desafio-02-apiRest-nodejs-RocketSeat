@@ -13,11 +13,11 @@ export async function mealsRoutes(app: FastifyInstance) {
         async (request) => {
             const { sessionId } = request.cookies
 
-            const transactions = await knex('meals')
+            const meals = await knex('meals')
                .where('session_id', sessionId)
                .select()
 
-        return { transactions }
+        return { meals }
         },
     )
 
