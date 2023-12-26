@@ -45,7 +45,7 @@ export async function mealsRoutes(app: FastifyInstance) {
   );
   
   app.get(
-    '/:summary',
+    '/summary',
     {
       preHandler: [checkSessionIdExists],
     },
@@ -69,11 +69,12 @@ export async function mealsRoutes(app: FastifyInstance) {
       for (const meal of meals) {
         summary.totalMeals++;
 
-        if (meal.inDiet === true) {
+        if (meal.inDiet === 1) {
           summary.totalMealsInDiet++;
           summary.bestSequence++;
         } else {
           summary.totalMealsOutDiet++;
+          summary.bestSequence = 0;
         }
       }
 

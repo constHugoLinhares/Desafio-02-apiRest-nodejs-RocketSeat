@@ -22,11 +22,11 @@ export async function usersRoutes(app: FastifyInstance) {
   app.post(
     '/',
     async(request,reply) => {
-      const createMealsBodySchema = z.object({
+      const createUsersBodySchema = z.object({
         name: z.string(),
       });
 
-      const { name } = createMealsBodySchema.parse(request.body,);
+      const { name } = createUsersBodySchema.parse(request.body,);
 
       let sessionId = request.cookies.sessionId;
 
@@ -36,6 +36,10 @@ export async function usersRoutes(app: FastifyInstance) {
         reply.setCookie('sessionId', sessionId, {
           path: '/',
           maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+        });
+      } else {
+        return reply.status(201).send({
+          message: 'User already logged in!',
         });
       }
 
