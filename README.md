@@ -14,33 +14,34 @@ Nesse desafio desenvolveremos uma API para controle de dieta diária, a Daily Di
 
 ### Regras da aplicação
 
-[X] - Deve ser possível criar um usuário
-[X] - Deve ser possível identificar o usuário entre as requisições
-[X] - Deve ser possível registrar uma refeição feita, com as seguintes informações:
-  _As refeições devem ser relacionadas a um usuário._
+[X] - Deve ser possível criar um usuário </br>
+[X] - Deve ser possível identificar o usuário entre as requisições </br>
+[X] - Deve ser possível registrar uma refeição feita, com as seguintes informações: </br>
+  _*As refeições devem ser relacionadas a um usuário.*_
   - Nome
   - Descrição
   - Data e Hora
   - Está dentro ou não da dieta
-[] - Deve ser possível editar uma refeição, podendo alterar todos os dados acima
-[] - Deve ser possível apagar uma refeição
-[] - Deve ser possível listar todas as refeições de um usuário
-[X] - Deve ser possível visualizar uma única refeição
-[X] - Deve ser possível recuperar as métricas de um usuário
-[X]  - Quantidade total de refeições registradas
-[X]  - Quantidade total de refeições dentro da dieta
-[X]  - Quantidade total de refeições fora da dieta
-[X]  - Melhor sequência de refeições dentro da dieta
-[..] - O usuário só pode visualizar, editar e apagar as refeições o qual ele criou
+
+[] - Deve ser possível editar uma refeição, podendo alterar todos os dados acima </br>
+[] - Deve ser possível apagar uma refeição </br>
+[] - Deve ser possível listar todas as refeições de um usuário </br>
+[X] - Deve ser possível visualizar uma única refeição </br>
+[X] - Deve ser possível recuperar as métricas de um usuário </br>
+[X]  - Quantidade total de refeições registradas </br>
+[X]  - Quantidade total de refeições dentro da dieta </br>
+[X]  - Quantidade total de refeições fora da dieta </br>
+[X]  - Melhor sequência de refeições dentro da dieta </br>
+[..] - O usuário só pode visualizar, editar e apagar as refeições o qual ele criou </br>
 
 Commands for run:
 
--npm run migrate:latest
--npm run migrate:make (name of file)
--npm install
+-npm run migrate:latest </br>
+-npm run migrate:make (name of file) </br>
+-npm install </br>
 
 features:
---Migrates
---User controller with create and show
---Food controller with create, update, delete, index and show
---Metrics controller to calculate metrics
+--Migrates </br>
+--User controller with create and show </br>
+--Food controller with create, update, delete, index and show </br>
+--Metrics controller to calculate metrics </br>
