@@ -11,7 +11,7 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  for(const table of tables) {
+  for (const table of tables) {
     await knex.schema.alterTable(`${table}`, (table) => {
       table.dropColumn('session_id');
     });

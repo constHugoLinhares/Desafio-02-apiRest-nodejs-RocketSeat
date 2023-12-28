@@ -25,7 +25,7 @@ Nesse desafio desenvolveremos uma API para controle de dieta diária, a Daily Di
 
 [] - Deve ser possível editar uma refeição, podendo alterar todos os dados acima </br>
 [] - Deve ser possível apagar uma refeição </br>
-[] - Deve ser possível listar todas as refeições de um usuário </br>
+[X] - Deve ser possível listar todas as refeições de um usuário </br>
 [X] - Deve ser possível visualizar uma única refeição </br>
 [X] - Deve ser possível recuperar as métricas de um usuário </br>
 [X]  - Quantidade total de refeições registradas </br>
@@ -36,9 +36,9 @@ Nesse desafio desenvolveremos uma API para controle de dieta diária, a Daily Di
 
 Commands for run:
 
--npm run migrate:latest </br>
--npm run migrate:make (name of file) </br>
 -npm install </br>
+-npm run migrate:latest </br>
+-npm run dev </br>
 
 features:
 --Migrates </br>

@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { randomUUID } from 'node:crypto';
 import { knex } from '../database';
+import moment from 'moment';
 import { checkSessionIdExists } from '../middlewares/check-session-id-exists';
 
 export async function mealsRoutes(app: FastifyInstance) {
@@ -39,6 +40,43 @@ export async function mealsRoutes(app: FastifyInstance) {
           id,
         })
         .first();
+
+      return { meals };
+    },
+  );
+  
+  app.put(
+    '/edit/:id',
+    {
+      preHandler: [checkSessionIdExists],
+    },
+    async(request) => {
+      const getMealsParamsSchema = z.object({
+        id: z.string().uuid(),
+      });
+      const getMealsBodySchema = z.object({
+        description: z.string().optional(),
+        inDiet: z.boolean().optional(),
+      });
+
+      const updated_at = moment().format('YYYY-MM-DD HH:mm:ss');
+
+      const { id } = getMealsParamsSchema.parse(request.params);
+
+      const { description, inDiet } = getMealsBodySchema.parse(request.body);      
+
+      const { sessionId } = request.cookies;
+
+      const meals = await knex('meals')
+        .update({
+          description,
+          inDiet,
+          updated_at,
+        })
+        .where({
+          session_id: sessionId,
+          id,
+        });
 
       return { meals };
     },
