@@ -1,9 +1,17 @@
+// Frameworks
 import { FastifyInstance } from 'fastify';
-import { z } from 'zod';
 import { randomUUID } from 'node:crypto';
+
+// database | middlewares
 import { knex } from '../database';
-import moment from 'moment';
 import { checkSessionIdExists } from '../middlewares/check-session-id-exists';
+
+// date 
+import moment from 'moment';
+
+// schemas
+import { getMealsParamsSchema } from '../schemas/getMealsParams';
+import { getMealsBodySchema } from '../schemas/getMealsBody';
 
 export async function mealsRoutes(app: FastifyInstance) {
   app.get(
@@ -11,11 +19,13 @@ export async function mealsRoutes(app: FastifyInstance) {
     {
       preHandler: [checkSessionIdExists],
     },
-    async(request) => {
+    async(request, reply) => {
       const { sessionId } = request.cookies;
 
       const meals = await knex('meals').where('session_id', sessionId).select();
-
+      if (meals.length <= 0) return reply.status(406).send({
+        error: 'No meal yet!',
+      });
       return { meals };
     },
   );
@@ -26,10 +36,6 @@ export async function mealsRoutes(app: FastifyInstance) {
       preHandler: [checkSessionIdExists],
     },
     async(request) => {
-      const getMealsParamsSchema = z.object({
-        id: z.string().uuid(),
-      });
-
       const { id } = getMealsParamsSchema.parse(request.params);
 
       const { sessionId } = request.cookies;
@@ -40,43 +46,6 @@ export async function mealsRoutes(app: FastifyInstance) {
           id,
         })
         .first();
-
-      return { meals };
-    },
-  );
-  
-  app.put(
-    '/edit/:id',
-    {
-      preHandler: [checkSessionIdExists],
-    },
-    async(request) => {
-      const getMealsParamsSchema = z.object({
-        id: z.string().uuid(),
-      });
-      const getMealsBodySchema = z.object({
-        description: z.string().optional(),
-        inDiet: z.boolean().optional(),
-      });
-
-      const updated_at = moment().format('YYYY-MM-DD HH:mm:ss');
-
-      const { id } = getMealsParamsSchema.parse(request.params);
-
-      const { description, inDiet } = getMealsBodySchema.parse(request.body);      
-
-      const { sessionId } = request.cookies;
-
-      const meals = await knex('meals')
-        .update({
-          description,
-          inDiet,
-          updated_at,
-        })
-        .where({
-          session_id: sessionId,
-          id,
-        });
 
       return { meals };
     },
@@ -120,15 +89,48 @@ export async function mealsRoutes(app: FastifyInstance) {
     },
   );
 
+  app.put(
+    '/edit/:id',
+    {
+      preHandler: [checkSessionIdExists],
+    },
+    async(request, reply) => {
+      const updated_at = moment().format('YYYY-MM-DD HH:mm:ss');
+
+      const { id } = getMealsParamsSchema.parse(request.params);
+
+      const { description, inDiet } = getMealsBodySchema.parse(request.body);      
+
+      const { sessionId } = request.cookies;
+
+      const meal = await knex('meals')
+        .where({
+          session_id: sessionId,
+          id: id,
+        })
+        .first();
+
+      await knex('meals')
+        .update({
+          description,
+          inDiet,
+          updated_at,
+        })
+        .where({
+          session_id: sessionId,
+          id,
+        });
+
+      return reply.status(202).send({
+        message: `Success on edit the meal: ${meal.description}`,
+      });
+    },
+  );
+  
   app.post(
     '/',
     async(request,reply) => {
-      const createMealsBodySchema = z.object({
-        description: z.string(),
-        inDiet: z.boolean(),
-      });
-
-      const { description, inDiet } = createMealsBodySchema.parse(request.body,);
+      const { description, inDiet } = getMealsBodySchema.parse(request.body,);
 
       const sessionId = request.cookies.sessionId;
 
@@ -147,5 +149,38 @@ export async function mealsRoutes(app: FastifyInstance) {
 
       return reply.status(201).send();
     }    
+  );
+  
+  app.delete(
+    '/delete/:id',
+    async(request, reply) => {
+      const { id } = getMealsParamsSchema.parse(request.params);
+
+      const { sessionId } = request.cookies;
+
+      const meals = await knex('meals')
+        .where({
+          session_id: sessionId,
+          id: id,
+        })
+        .first();
+      
+      if (isNaN(meals)) {
+        return reply.status(406).send({
+          message: 'Meal doesn\'t exist!',
+        });
+      }
+
+      await knex('meals')
+        .where({
+          session_id: sessionId,
+          id,
+        })
+        .del();
+
+      return reply.status(200).send({
+        message: `Success on delete the meal: ${meals.description}`,
+      });
+    }
   );
 }
