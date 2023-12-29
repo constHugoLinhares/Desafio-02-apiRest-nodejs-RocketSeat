@@ -31,7 +31,7 @@ export async function mealsRoutes(app: FastifyInstance) {
   );
 
   app.get(
-    '/:id',
+    '/specificMeal/:id',
     {
       preHandler: [checkSessionIdExists],
     },
@@ -165,7 +165,7 @@ export async function mealsRoutes(app: FastifyInstance) {
         })
         .first();
       
-      if (isNaN(meals)) {
+      if (meals.length <= 0) {
         return reply.status(406).send({
           message: 'Meal doesn\'t exist!',
         });
