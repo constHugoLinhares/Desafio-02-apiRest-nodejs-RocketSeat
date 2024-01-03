@@ -12,6 +12,7 @@
     "migrate:make": "npx knex --knexfile ./knexFile.ts migrate:make",
     "lint": "eslint src --ext .ts --fix",
     "build": "tsup src --out-dir build",
+    "build:tsc": "npx tsc",
     "test": "vitest"
   },
   "keywords": [],
