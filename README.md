@@ -39,6 +39,7 @@ Commands for run:
 -npm install </br>
 -npm run migrate:latest </br>
 -npm run dev </br>
+-npm run test (é necessário estar com o .env.test configurado) </br>
 
 features:
 --Migrates </br>
