@@ -31,7 +31,7 @@ export async function mealsRoutes(app: FastifyInstance) {
   );
 
   app.get(
-    '/specificMeal/:id',
+    '/:id',
     {
       preHandler: [checkSessionIdExists],
     },
