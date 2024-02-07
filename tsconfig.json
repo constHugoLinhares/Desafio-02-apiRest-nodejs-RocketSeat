@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "rootDir": "./src",
+        "outDir": "./build",
+        "moduleResolution": "Node10",
+        "allowImportingTsExtensions": false,
+        "esModuleInterop": true,
+        "strict": true
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
+}
